@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="免费在线图片压缩工具，支持JPG、PNG、WebP格式，本地压缩保护隐私">
+    <meta name="keywords" content="图片压缩,在线压缩,图片优化,图片处理">
+    <title>图片压缩工具 | 免费在线图片压缩</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span>图片压缩工具</span>
+            </div>
+            <div class="header-badge">100% 本地处理</div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 上传区域 -->
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </div>
+                    <h2>拖拽图片到这里</h2>
+                    <p>或者点击选择图片</p>
+                    <p class="upload-hint">支持 JPG、PNG、WebP 格式，单张最大 20MB</p>
+                    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                </div>
+            </div>
+
+            <!-- 压缩设置 -->
+            <div class="settings-section" id="settingsSection">
+                <h3>压缩设置</h3>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="qualitySlider">压缩质量</label>
+                        <div class="slider-container">
+                            <input type="range" id="qualitySlider" min="10" max="100" value="80">
+                            <span class="slider-value" id="qualityValue">80%</span>
+                        </div>
+                        <p class="setting-hint">质量越低，文件越小</p>
+                    </div>
+                    <div class="setting-item">
+                        <label for="maxWidth">最大宽度 (px)</label>
+                        <input type="number" id="maxWidth" placeholder="不限制" min="100" max="10000">
+                        <p class="setting-hint">留空表示保持原尺寸</p>
+                    </div>
+                    <div class="setting-item">
+                        <label for="outputFormat">输出格式</label>
+                        <select id="outputFormat">
+                            <option value="auto">保持原格式</option>
+                            <option value="image/jpeg">JPEG</option>
+                            <option value="image/png">PNG</option>
+                            <option value="image/webp">WebP</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图片列表 -->
+            <div class="images-section" id="imagesSection">
+                <div class="section-header">
+                    <h3>待压缩图片 (<span id="imageCount">0</span>)</h3>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" id="clearAllBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            清空全部
+                        </button>
+                        <button class="btn btn-primary" id="compressAllBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                            开始压缩
+                        </button>
+                    </div>
+                </div>
+                <div class="images-list" id="imagesList"></div>
+            </div>
+
+            <!-- 压缩结果 -->
+            <div class="results-section" id="resultsSection">
+                <div class="section-header">
+                    <h3>压缩结果</h3>
+                    <div class="total-savings" id="totalSavings"></div>
+                </div>
+                <div class="results-list" id="resultsList"></div>
+                <button class="btn btn-success btn-large" id="downloadAllBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    下载全部压缩图片
+                </button>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>所有图片处理均在浏览器本地完成，不会上传到服务器，保护您的隐私安全。</p>
+        </footer>
+    </div>
+
+    <!-- 加载提示 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>正在压缩中...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
